@@ -1,3 +1,4 @@
+#define NUM_LED (10)
 volatile uint16_t adcCounter = 0;
 volatile uint16_t adcValue = 0;
 volatile bool adcReady = false;
@@ -33,9 +34,9 @@ void setup() {
 
 void loop() {
     if (adcReady) {
-        int value = map(adcValue, 0, 200, 0, 11);
+        int value = map(adcValue, 0, 200, 0, NUM_LED + 1);
         value = min(11, value);
-        for (int i = 2; i < 10+2; i++) {
+        for (int i = 2; i < NUM_LED+2; i++) {
             digitalWrite(i, 0);
         }
         for (int i = 2; i < value+2; i++) {

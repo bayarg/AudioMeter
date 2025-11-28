@@ -55,7 +55,7 @@ void loop() {
 
 // 신호 샘플링 - begin
 ISR(ADC_vect) {
-    if (++adcCounter == 1500) {
+    if (++adcCounter == 1562) { // 1562로 설정한 이유는 목표하는 제어 주기인 80Hz로 다운 샘플링 하고자함.
         adcCounter = 0;
         adcValue = ADC;
         adcReady = true;

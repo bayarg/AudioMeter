@@ -34,18 +34,26 @@ void setup() {
 
 void loop() {
     if (adcReady) {
+
+        // 레벨 매핑 - begin
         int value = map(adcValue, 0, 200, 0, NUM_LED + 1);
         value = min(11, value);
+        // 레벨 매핑 - end
+
+        // LED 출력 - begin
         for (int i = 2; i < NUM_LED+2; i++) {
             digitalWrite(i, 0);
         }
         for (int i = 2; i < value+2; i++) {
             digitalWrite(i, 1);
         }
+        // LED 출력 - end
+
         adcReady = false;
     }
 }
 
+// 신호 샘플링 - begin
 ISR(ADC_vect) {
     if (++adcCounter == 1500) {
         adcCounter = 0;
@@ -54,3 +62,4 @@ ISR(ADC_vect) {
     }
     ADCSRA |= (1 << ADSC);
 }
+// 신호 샘플링 - end

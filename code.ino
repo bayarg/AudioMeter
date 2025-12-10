@@ -1,4 +1,8 @@
 #define NUM_LED (10)
+#define WARNING_LEVEL 8     
+#define WARNING_LED 13
+
+
 volatile uint16_t adcCounter = 0;
 volatile uint16_t adcValue = 0;
 volatile bool adcReady = false;
@@ -39,6 +43,33 @@ void loop() {
         int value = map(adcValue, 0, 200, 0, NUM_LED + 1);
         value = min(11, value);
         // 레벨 매핑 - end
+
+
+        
+        //  경고 기능 - begin 
+        if (value >= 11) {
+            Serial.println("⚠ WARNING: Noise Level TOO HIGH!");
+         
+            
+            // LED 깜빡임
+            static unsigned long lastBlink = 0;
+            static bool state = false;
+
+            if (millis() - lastBlink > 300) {
+                lastBlink = millis();
+                state = !state;
+
+                for (int i = 2; i < NUM_LED + 2; i++) {
+                    digitalWrite(i, state ? HIGH : LOW);
+                }
+            }
+
+            adcReady = false;
+            return;   //
+        }
+        //  경고 기능 - end
+
+            
 
         // LED 출력 - begin
         for (int i = 2; i < NUM_LED+2; i++) {
